@@ -4,6 +4,7 @@ import cors from "cors";
 import express from "express";
 import session from "express-session";
 import dotenv from "dotenv";
+import cookieSession from "cookie-session";
 
 dotenv.config();
 
@@ -17,18 +18,16 @@ app.use(
   })
 );
 
+// var cookieSession = require("cookie-session");
+app.set("trust proxy", 1);
 app.use(
-  session({
-    name: "session-test",
-    secret: "secret",
-
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-      sameSite: "none",
-      secure: true,
-    },
+  cookieSession({
+    name: "__session",
+    keys: ["key1"],
+    maxAge: 24 * 60 * 60 * 100,
+    secure: true,
+    httpOnly: true,
+    sameSite: "none",
   })
 );
 
